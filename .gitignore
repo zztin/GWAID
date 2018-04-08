@@ -1,5 +1,6 @@
 # data folder that are not shared publicly
-./data
+data
+data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
