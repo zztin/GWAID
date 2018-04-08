@@ -20,7 +20,7 @@ aid_list = "1. Behcet's disease \n" \
            "6. Alopecia areata \n" \
            "7. Type 1 diabetes \n" \
            "8. Ankylosing spondylitis \n" \
-           "9. Systemic sclerosis" \
+           "9. Systemic sclerosis \n" \
            "10. Vitiligo \n" \
            "11. Kawasaki disease \n" \
            "12. Psoriasis \n" \
@@ -33,9 +33,27 @@ aid = ['Behcet\'s disease', 'Crohn\'s disease', 'Asthma', 'Atopic dermatitis', '
        'Alopecia areata', 'Type 1 diabetes', 'Ankylosing spondylitis', 'Systemic sclerosis', 'Vitiligo',
        'Kawasaki disease', 'Psoriasis', 'Celiac disease', 'Systemic lupus erythematosus', 'Ulcerative colitis']
 
-def aid_index_name(index):
-      disease = aid[index-1]
-      return disease
+
+def aid_index_to_name():
+    wrong_input = True
+    while wrong_input == True:
+        try:
+            index = int(input('Please select a disease from the following list : \n'
+                                      + aid_list +'\n (Enter 1-15): \n'))
+            disease = aid[index - 1]
+            print("Your choice is: " + disease)
+            wrong_input = False
+        except (ValueError, IndexError):
+            print("Warning! Please enter a number to choose the correlated disease! ")
+            wrong_input = True
+    return disease
+
+
+# How to write a check program?
+#  def check_input(user_input):
+#       try:
+#             user_input()
+#
 
 def again():
       again = input("Do you want to use other function of the program? (y/n) ")
@@ -43,3 +61,4 @@ def again():
             return True
       else:
             return False
+

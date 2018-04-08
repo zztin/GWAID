@@ -13,5 +13,3 @@ def plot_overview(df):
     pt = df.pivot_table(index ="DZ_NAME", columns ="MAPPED_GENE", values ="P-VALUE")
     sns.heatmap(pt)
     plt.show()
-
-plot_overview(df)
