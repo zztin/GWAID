@@ -133,18 +133,18 @@ def search_lit(disease, genes):
             pubtator_dic[disease][gene]['input'] = None
             pubtator_dic[disease][gene]['chemicals'] = None
             pubtator_dic[disease][gene]['amount_chem'] = 0
-    print(pubtator_dic) #
+    # print(pubtator_dic)
     df_pubtator = pd.DataFrame.from_dict(pubtator_dic)  # NEW
     print("END")                             #########################
     print(start_time+ '\n' + time.ctime())   #########################
     return pubtator_dic, df_pubtator
 
 
-def dic_to_json(pubtator_dic, filename):
-    pubtator_json = json.dumps(pubtator_dic)
-    f = open(filename, 'w')
-    f.write(pubtator_json)
-    f.close
+# def dic_to_json(pubtator_dic, filename):
+#     pubtator_json = json.dumps(pubtator_dic)
+#     f = open(filename, 'w')
+#     f.write(pubtator_json)
+#     f.close
 
 # save result df to pickle file
 def df_to_pickle(df, disease):
@@ -165,8 +165,9 @@ def read_pickle_df(filepath):
 
 # built=in dataset
 
+#
+# df = sns.load_dataset('Titanic')
+# df_to_pickle(df, 'Titanic')
 
-df = sns.load_dataset('Titanic')
-df_to_pickle(df, 'Titanic')
 # dic = {'dz':{'gene_amount':len(30)}}
 # dic_to_json(dic,'test_dic')

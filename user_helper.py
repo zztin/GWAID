@@ -58,7 +58,7 @@ def filename_convert(value):
     """
     removes non-alpha or non-number characters, and converts underscores, hyphens and spaces to a single underscore.
     """
-    value = re.sub('[^\w\s-_]', '', value).strip()
+    value = re.sub('[^\w\s_-]', '', value).strip()
     value = re.sub('[-_\s]+', '_', value)
     return value
 
