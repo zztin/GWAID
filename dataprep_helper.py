@@ -78,11 +78,11 @@ def disease_to_genes(df, disease):
 
 def search_lit(disease, genes):
     start_time = time.ctime()   ###########################
-    pubtator_input_list = []
+    #pubtator_input_list = []
     pubtator_dic = {disease:{'gene_amount':len(genes)}}
     counter = 0
     for gene in genes:
-        pubtator_dic_tmp1 = {disease:{gene:{}}}
+        pubtator_dic_tmp1 = {gene:{}}
         pubtator_dic[disease].update(pubtator_dic_tmp1)
         counter += 1
         pubmed_term = disease + "[MeSH Term]" + " AND " + disease + "[Title/Abstract]" + " AND " + gene + "[Title/Abstract]"
@@ -91,35 +91,38 @@ def search_lit(disease, genes):
         print("start query: "+ time.ctime())  #######################################################
         response_xml = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", params = payload_eutils)
         query_check(response_xml)
+        pm_search = response_xml.text
         print("end query: "+ time.ctime() + ". sleep 0.7s")  #######################################################
         time.sleep(0.7)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.7 second to delay the process
         try:
-            pmid_dic = xmltodict.parse(response_xml.text)
+            pmid_dic = xmltodict.parse(pm_search)
             pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
             pubtator_dic[disease][gene]['pmid_entry'] = pmid_entry
             pmid_list = pmid_dic['eSearchResult']['IdList']['Id']
             # Raise TypeError when returning no search results. When search result is 0 hits:  'IdList' is NoneType
             pubtator_dic[disease][gene]['pmid_list'] = pmid_list
         except TypeError:
+            pmid_list = ''
             pubtator_dic[disease][gene]['pmid_list'] = []
-            pubtator_dic[disease][gene]['pmid_entry'] = ''
+            pubtator_dic[disease][gene]['pmid_entry'] = None
         except Exception as err:
+            pmid_list = ''
             print(err)
         try:
-            pubtator_input = ",".join(pmid_list)
-            pubtator_input_list.append(pubtator_input)    # pubtator_input_list has the order according to the genes related to a disease
+            pubtator_input = ",".join(pmid_list)  # if pubtator_input = None--> stop trying to query
+            #pubtator_input_list.append(pubtator_input)    # pubtator_input_list has the order according to the genes related to a disease
             response_pubtator = requests.get('https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/Chemical/'
                                              + pubtator_input +'/JSON')
             query_check(response_xml)
-            text = response_pubtator.text  # {dic1,dic2,dic3,dic4,dic5,dic6} <--- structure is wrong. Is not a JSON structure.
+            text_pubtator = response_pubtator.text  # {dic1,dic2,dic3,dic4,dic5,dic6} <--- structure is wrong. Is not a JSON structure.
             # Correct it to JSON format by string manipulation.
-            if 'Error' in text:
+            if '[Error] :' in text_pubtator:
                 continue
-            text = text[1:-2]
-            text = '[' + text + ']'
-            text = '{"top":' + text + '}'
+            text_pubtator = text_pubtator[1:-2]
+            text_pubtator = '[' + text_pubtator + ']'
+            text_pubtator = '{"top":' + text_pubtator + '}'
             # load json into python dictionary
-            pub_json_load = json.loads(text)
+            pub_json_load = json.loads(text_pubtator)
             chemicals = []
             for i in range(0,len(pub_json_load['top'])):
                 for j in range(0,len(pub_json_load['top'][i]['denotations'])): # Raise TypeError when some key is absent

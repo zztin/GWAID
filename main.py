@@ -18,7 +18,7 @@ intro = input("Do you want to read some introduction? (y/n) ").lower()
 if intro == 'y':
     uh.print_intro()
 else:
-    pass
+    print("Please wait...")
 try:
     df = dh.gwas_import_aid()
 except Exception:
@@ -49,8 +49,7 @@ while again == True:
             disease, genes = dh.disease_to_genes(df, disease)
             # generate pubmed key with disease name + 1 gene name from the list.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
-            filename = uh.fill_filename(disease)
-            dh.df_to_pickle(df_pubtator, filename)
+            dh.df_to_pickle(df_pubtator, disease)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
 
             again = uh.again()
