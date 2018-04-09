@@ -52,7 +52,6 @@ while again == True:
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             dh.df_to_pickle(df_pubtator, disease)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
-
             again = uh.again()
         elif answer == 'c':
             print("Thank you for using this program. Goodbye. ")
