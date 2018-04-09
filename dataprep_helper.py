@@ -7,6 +7,7 @@ import xmltodict
 import json
 import time
 import re
+import csv
 
 def gwas_import_aid():
     df_ori = pd.read_csv("./data/gwas_catalog_v1.0.1-associations_e91_r2018-02-13.tsv",sep='\t',low_memory=False)
@@ -76,11 +77,13 @@ def disease_to_genes(df, disease):
 
 def search_lit(disease, genes):
     pubtator_input_list = []
-    pubtator_dic = {}
+    pubtator_dic = {disease:{'gene_amount':len(genes)}}
     print(time.ctime()) #
+    counter = 0
     for gene in genes:
-        pubtator_dic_tmp = {disease:{gene:{'length':len(genes)}}}
-        pubtator_dic.update(pubtator_dic_tmp)
+        counter += 1
+        pubtator_dic_tmp = {gene:{'length':len(genes)}}
+        pubtator_dic[disease].update(pubtator_dic_tmp)
         #pubtator_dic[disease] = {gene: {}}
         #pubtator_dic[disease][gene] = {'length': []}
         #pubtator_dic[disease][gene]['length'] = len(genes)
@@ -122,6 +125,7 @@ def search_lit(disease, genes):
             pubtator_dic[disease][gene]['chemicals'] = chemicals             # REWRITE! DID NOT CONTAIN THE DATA BEFORE
             pubtator_dic[disease][gene]['amount_chem'] = len(chemicals)
             print(time.ctime())
+            print(counter)
         except TypeError:  # when search result is 0 hits:  'IdList' is NoneType
             pubtator_dic[disease][gene]['input'] = None
             pubtator_dic[disease][gene]['chemicals'] = None
