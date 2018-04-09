@@ -82,12 +82,9 @@ def search_lit(disease, genes):
     pubtator_dic = {disease:{'gene_amount':len(genes)}}
     counter = 0
     for gene in genes:
+        pubtator_dic_tmp1 = {disease:{gene:{}}}
+        pubtator_dic[disease].update(pubtator_dic_tmp1)
         counter += 1
-        pubtator_dic_tmp = {gene:{'length':len(genes)}}
-        pubtator_dic[disease].update(pubtator_dic_tmp)
-        #pubtator_dic[disease] = {gene: {}}
-        #pubtator_dic[disease][gene] = {'length': []}
-        #pubtator_dic[disease][gene]['length'] = len(genes)
         pubmed_term = disease + "[MeSH Term]" + " AND " + disease + "[Title/Abstract]" + " AND " + gene + "[Title/Abstract]"
         # search each search term formed by disease + gene from the list of the disease
         payload_eutils = {'db':'pubmed','term':pubmed_term,'usehistory':'y'}
@@ -96,12 +93,20 @@ def search_lit(disease, genes):
         query_check(response_xml)
         print("end query: "+ time.ctime() + ". sleep 0.7s")  #######################################################
         time.sleep(0.7)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.7 second to delay the process
-        pmid_dic = xmltodict.parse(response_xml.text)
-        # pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
         try:
-            pmid_list = pmid_dic['eSearchResult']['IdList']['Id']              # Raise TypeError when some key is absent
+            pmid_dic = xmltodict.parse(response_xml.text)
+            pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
+            pubtator_dic[disease][gene]['pmid_entry'] = pmid_entry
+            pmid_list = pmid_dic['eSearchResult']['IdList']['Id']
+            # Raise TypeError when returning no search results. When search result is 0 hits:  'IdList' is NoneType
+            pubtator_dic[disease][gene]['pmid_list'] = pmid_list
+        except TypeError:
+            pubtator_dic[disease][gene]['pmid_list'] = []
+            pubtator_dic[disease][gene]['pmid_entry'] = ''
+        except Exception as err:
+            print(err)
+        try:
             pubtator_input = ",".join(pmid_list)
-            pubtator_dic[disease][gene]['input'] = pubtator_input
             pubtator_input_list.append(pubtator_input)    # pubtator_input_list has the order according to the genes related to a disease
             response_pubtator = requests.get('https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/Chemical/'
                                              + pubtator_input +'/JSON')
@@ -129,11 +134,11 @@ def search_lit(disease, genes):
             pubtator_dic[disease][gene]['amount_chem'] = len(chemicals)
             print(time.ctime())
             print(counter)
-        except TypeError:  # when search result is 0 hits:  'IdList' is NoneType
-            pubtator_dic[disease][gene]['input'] = None
+        except Exception as err:  # when search result is 0 hits:  'IdList' is NoneType
+            print(err) #############
             pubtator_dic[disease][gene]['chemicals'] = None
             pubtator_dic[disease][gene]['amount_chem'] = 0
-    # print(pubtator_dic)
+    print(pubtator_dic) #
     df_pubtator = pd.DataFrame.from_dict(pubtator_dic)  # NEW
     print("END")                             #########################
     print(start_time+ '\n' + time.ctime())   #########################
