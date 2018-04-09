@@ -76,11 +76,11 @@ def disease_to_genes(df, disease):
 
 def search_lit(disease, genes):
     pubtator_input_list = []
-    pubtator_dic = {disease:[{}, {'gene amount':len(genes)}]}
+    pubtator_dic = {}
     print(time.ctime()) #
     for gene in genes:
-        pubtator_dic_gene = {gene:{'input':None,'chemicals':None, 'amount_chem':None}}
-        pubtator_dic[disease][0].update(pubtator_dic_gene)
+        pubtator_dic_tmp = {disease:{gene:{'length':len(genes)}}}
+        pubtator_dic.update(pubtator_dic_tmp)
         #pubtator_dic[disease] = {gene: {}}
         #pubtator_dic[disease][gene] = {'length': []}
         #pubtator_dic[disease][gene]['length'] = len(genes)
@@ -95,7 +95,7 @@ def search_lit(disease, genes):
         try:
             pmid_list = pmid_dic['eSearchResult']['IdList']['Id']              # Raise TypeError when some key is absent
             pubtator_input = ",".join(pmid_list)
-            pubtator_dic[disease][0][gene]['input'] = pubtator_input
+            pubtator_dic[disease][gene]['input'] = pubtator_input
             pubtator_input_list.append(pubtator_input)    # pubtator_input_list has the order according to the genes related to a disease
             response_pubtator = requests.get('https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/Chemical/'
                                              + pubtator_input +'/JSON')
@@ -123,9 +123,9 @@ def search_lit(disease, genes):
             pubtator_dic[disease][gene]['amount_chem'] = len(chemicals)
             print(time.ctime())
         except TypeError:  # when search result is 0 hits:  'IdList' is NoneType
-            pubtator_dic[disease][0][gene]['input'] = None
-            pubtator_dic[disease][0][gene]['chemicals'] = None
-            pubtator_dic[disease][0][gene]['amount_chem'] = 0
+            pubtator_dic[disease][gene]['input'] = None
+            pubtator_dic[disease][gene]['chemicals'] = None
+            pubtator_dic[disease][gene]['amount_chem'] = 0
     print(pubtator_dic) #
     df_pubtator = pd.DataFrame.from_dict(pubtator_dic)  # NEW
     print(time.ctime())  #
