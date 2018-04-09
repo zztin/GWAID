@@ -17,6 +17,7 @@ print("Launching Autoimmune diseases exploration in Genome-wide association stud
 intro = input("Do you want to read some introduction? (y/n) ").lower()
 if intro == 'y':
     uh.print_intro()
+    print("\n\nPlease wait...")
 else:
     print("Please wait...")
 try:
@@ -61,3 +62,5 @@ while again == True:
 # TBD: what errors exactly?
     except ValueError or TypeError:
         print("This is not a valid input. Please try again")
+
+print("Thank you for using this program. Goodbye. ")

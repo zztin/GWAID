@@ -109,14 +109,22 @@ def search_lit(disease, genes):
             pmid_list = ''
             print(err)
         try:
-            pubtator_input = ",".join(pmid_list)  # if pubtator_input = None--> stop trying to query
+            if pmid_list == '':
+                raise Exception
+            elif isinstance(pmid_list, list) == True:
+                pubtator_input = ",".join(pmid_list)  # if pubtator_input = None--> stop trying to query
             #pubtator_input_list.append(pubtator_input)    # pubtator_input_list has the order according to the genes related to a disease
+            elif isinstance(pmid_list, str) == True:
+                pass
+            else:
+                raise Exception
             response_pubtator = requests.get('https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/Chemical/'
                                              + pubtator_input +'/JSON')
             query_check(response_xml)
             text_pubtator = response_pubtator.text  # {dic1,dic2,dic3,dic4,dic5,dic6} <--- structure is wrong. Is not a JSON structure.
             # Correct it to JSON format by string manipulation.
             if '[Error] :' in text_pubtator:
+                print(gene, 'Error message presented. Skip PubTator querying.')
                 continue
             text_pubtator = text_pubtator[1:-2]
             text_pubtator = '[' + text_pubtator + ']'
