@@ -8,6 +8,7 @@ import json
 import time
 import re
 import csv
+import user_helper as uh
 
 def gwas_import_aid():
     df_ori = pd.read_csv("./data/gwas_catalog_v1.0.1-associations_e91_r2018-02-13.tsv",sep='\t',low_memory=False)
@@ -76,9 +77,9 @@ def disease_to_genes(df, disease):
 
 
 def search_lit(disease, genes):
+    start_time = time.ctime()   ###########################
     pubtator_input_list = []
     pubtator_dic = {disease:{'gene_amount':len(genes)}}
-    print(time.ctime()) #
     counter = 0
     for gene in genes:
         counter += 1
@@ -90,8 +91,10 @@ def search_lit(disease, genes):
         pubmed_term = disease + "[MeSH Term]" + " AND " + disease + "[Title/Abstract]" + " AND " + gene + "[Title/Abstract]"
         # search each search term formed by disease + gene from the list of the disease
         payload_eutils = {'db':'pubmed','term':pubmed_term,'usehistory':'y'}
+        print("start query: "+ time.ctime())  #######################################################
         response_xml = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", params = payload_eutils)
         query_check(response_xml)
+        print("end query: "+ time.ctime() + ". sleep 0.7s")  #######################################################
         time.sleep(0.7)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.7 second to delay the process
         pmid_dic = xmltodict.parse(response_xml.text)
         # pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
@@ -132,10 +135,40 @@ def search_lit(disease, genes):
             pubtator_dic[disease][gene]['amount_chem'] = 0
     print(pubtator_dic) #
     df_pubtator = pd.DataFrame.from_dict(pubtator_dic)  # NEW
-    print(time.ctime())  #
-    print(df_pubtator)
-    return df_pubtator
+    print("END")                             #########################
+    print(start_time+ '\n' + time.ctime())   #########################
+    return pubtator_dic, df_pubtator
 
-df = gwas_import_aid()
-disease, genes = disease_to_genes(df, 'Asthma')
-df_pubtator = search_lit(disease, genes)
+
+def dic_to_json(pubtator_dic, disease):
+    pubtator_json = json.dumps(pubtator_dic)
+    f = open(disease + 'pubtator_json', 'w')
+    f.write(pubtator_json)
+    f.close
+
+# save result df to pickle file
+def df_to_pickle(df, disease):
+    d_filename = uh.fill_filename(disease)
+    df.to_pickle('./data/' + d_filename)
+
+
+# read df as a pickle file for further analysis
+def read_pickle_df(filepath):
+    df = pd.read_pickle(filepath)
+    return df
+
+
+# TRYING
+# df = gwas_import_aid()
+# disease, genes = disease_to_genes(df, 'Asthma')
+# df_pubtator = search_lit(disease, genes)
+
+# TRY SAVING FILE
+titanic = sns.load_dataset('titanic')
+print(type(titanic))
+df_to_pickle(titanic, "Tit---anic ankyl     osing\'s  ")
+
+
+# titan = read_pickle_df('')
+#print(titan.head())
+

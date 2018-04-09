@@ -45,11 +45,15 @@ while again == True:
             # Show heat map between Autoimmune diseases ( Gene hits )
             # overview.aid_compare()
         elif answer == 'b':
-            disease = uh.aid_index_to_name()
+            index, disease = uh.aid_index_to_name()
             disease, genes = dh.disease_to_genes(df, disease)
             # generate pubmed key with disease name + 1 gene name from the list.
-            df_chemicals_to_disease = dh.search_lit(disease=disease, genes=genes)
+            pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
+            filename = filename(index)
+            dh.df_to_pickle(df_pubtator, filename)
+            dh.dic_to_json(pubtator_dic, filename)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
+
             again = uh.again()
         elif answer == 'c':
             print("Thank you for using this program. Goodbye. ")
