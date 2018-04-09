@@ -53,6 +53,7 @@ def aid_index_to_name():
 
 
 # Adapt from stackoverflow according to https://www.djangoproject.com/
+# called by fill_filename() function in this user_helper program
 def filename_convert(value):
     """
     removes non-alpha or non-number characters, and converts underscores, hyphens and spaces to a single underscore.

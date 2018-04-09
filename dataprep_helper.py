@@ -140,9 +140,9 @@ def search_lit(disease, genes):
     return pubtator_dic, df_pubtator
 
 
-def dic_to_json(pubtator_dic, disease):
+def dic_to_json(pubtator_dic, filename):
     pubtator_json = json.dumps(pubtator_dic)
-    f = open(disease + 'pubtator_json', 'w')
+    f = open(filename, 'w')
     f.write(pubtator_json)
     f.close
 
@@ -163,12 +163,10 @@ def read_pickle_df(filepath):
 # disease, genes = disease_to_genes(df, 'Asthma')
 # df_pubtator = search_lit(disease, genes)
 
-# TRY SAVING FILE
-titanic = sns.load_dataset('titanic')
-print(type(titanic))
-df_to_pickle(titanic, "Tit---anic ankyl     osing\'s  ")
+# built=in dataset
 
 
-# titan = read_pickle_df('')
-#print(titan.head())
-
+df = sns.load_dataset('Titanic')
+df_to_pickle(df, 'Titanic')
+# dic = {'dz':{'gene_amount':len(30)}}
+# dic_to_json(dic,'test_dic')

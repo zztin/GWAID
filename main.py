@@ -49,7 +49,7 @@ while again == True:
             disease, genes = dh.disease_to_genes(df, disease)
             # generate pubmed key with disease name + 1 gene name from the list.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
-            filename = filename(index)
+            filename = uh.fill_filename(disease)
             dh.df_to_pickle(df_pubtator, filename)
             dh.dic_to_json(pubtator_dic, filename)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
