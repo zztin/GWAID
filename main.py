@@ -51,6 +51,7 @@ while again == True:
             # generate pubmed key with disease name + 1 gene name from the list.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             dh.df_to_pickle(df_pubtator, disease)
+            dh.write_txt(pubtator_dic)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
             again = uh.again()
         elif answer == 'c':

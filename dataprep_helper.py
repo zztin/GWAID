@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -8,6 +7,8 @@ import json
 import time
 import re
 import csv
+
+
 import user_helper as uh
 
 def gwas_import_aid():
@@ -166,6 +167,11 @@ def search_lit(disease, genes):
 def df_to_pickle(df, disease):
     d_filename = uh.fill_filename(disease)
     df.to_pickle('./data/' + d_filename)
+
+def write_txt(dic):
+    filename = str(dic) + '.txt'
+    with open(filename, 'w') as file:
+        file.write(dic)
 
 
 # read df as a pickle file for further analysis
