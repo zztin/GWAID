@@ -55,10 +55,10 @@ def disease_to_genes(df, disease):
         if ',' in gene:
             gene_possibilities = gene.split(',')
             for gene_pos in gene_possibilities:
-                gene_pos.strip()
+                gene_pos = gene_pos.strip()
                 if gene_pos not in genes:
                     genes.append(gene_pos)
-        elif gene == 'NR' or gene == 'intergenic':
+        elif gene == 'NR' or gene == 'intergenic' or gene == 'Intergenic':
             pass
         else:
              if gene not in genes:
@@ -89,12 +89,11 @@ def search_lit(disease, genes):
         pubmed_term = disease + "[MeSH Term]" + " AND " + disease + "[Title/Abstract]" + " AND " + gene + "[Title/Abstract]"
         # search each search term formed by disease + gene from the list of the disease
         payload_eutils = {'db':'pubmed','term':pubmed_term,'usehistory':'y'}
-        print("start query: "+ time.ctime())  #######################################################
+        print(time.ctime() + " Querying gene " + str(counter) + ", " + str(gene))  #######################################################
         response_xml = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", params = payload_eutils)
         query_check(response_xml)
         pm_search = response_xml.text
-        print("end query: "+ time.ctime() + ". sleep 0.7s")  #######################################################
-        time.sleep(0.7)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.7 second to delay the process
+        time.sleep(0.5)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.5 second to delay the process
         try:
             pmid_dic = xmltodict.parse(pm_search)
             pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
@@ -102,13 +101,14 @@ def search_lit(disease, genes):
             pmid_list = pmid_dic['eSearchResult']['IdList']['Id']
             # Raise TypeError when returning no search results. When search result is 0 hits:  'IdList' is NoneType
             pubtator_dic[disease][gene]['pmid_list'] = pmid_list
+            pubtator_dic[disease][gene]['related_literature_hits'] = len(pmid_list)
         except TypeError:
             pmid_list = ''
             pubtator_dic[disease][gene]['pmid_list'] = []
             pubtator_dic[disease][gene]['pmid_entry'] = None
         except Exception as err:
             pmid_list = ''
-            print(err)
+            print(err)             ##########
         try:
             if pmid_list == '':
                 raise Exception
@@ -144,10 +144,7 @@ def search_lit(disease, genes):
                             chemicals.append(chem_id)
             pubtator_dic[disease][gene]['chemicals'] = chemicals             # REWRITE! DID NOT CONTAIN THE DATA BEFORE
             pubtator_dic[disease][gene]['amount_chem'] = len(chemicals)
-            print(time.ctime())
-            print(counter)
         except Exception as err:  # when search result is 0 hits:  'IdList' is NoneType
-            print(err) #############
             pubtator_dic[disease][gene]['chemicals'] = None
             pubtator_dic[disease][gene]['amount_chem'] = 0
     # pubtator_dic contains all useful information extracted from the query. (Further save as json for future use.)
@@ -155,7 +152,7 @@ def search_lit(disease, genes):
     # extract the information for plotting barchart comparison between gene (major output)
     df_pubtator = pd.DataFrame.from_dict(pubtator_dic[disease],orient = 'index')  # NEW
     print("END")                             #########################
-    print(start_time+ '\n' + time.ctime())  #########################
+    print("Total querying time from \n" + start_time+ '\n' + time.ctime())  #########################
     return pubtator_dic, df_pubtator
 
 
@@ -166,22 +163,19 @@ def search_lit(disease, genes):
 #     f.close
 
 # save result df to pickle file
-def df_to_pickle(df, disease):
+def df_to_pickle(df, filename):
     print('Save pickle file: ')
-    d_filename = uh.fill_filename(disease)
-    df.to_pickle('./data/' + d_filename)
+    df.to_pickle('./data/' + filename)
 
 
-def write_txt(dic, disease):
+def write_txt(dic, filename):
     print('Save txt file: ')
-    d_filename = uh.fill_filename(disease)
-    with open(d_filename, 'w') as file:
+    with open('./data/'+ filename, 'w') as file:
         file.write(str(dic))
 
-def dic_json(dic, disease):
+def dic_json(dic, filename):
     print('Save json file: ')
-    d_filename = uh.fill_filename(disease)
-    with open(d_filename + '.txt', 'w') as outfile:
+    with open('./data/' + filename + '.txt', 'w') as outfile:
         json.dump(dic, outfile)
 
 
