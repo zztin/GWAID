@@ -19,7 +19,7 @@ if intro == 'y':
     uh.print_intro()
     print("\n\nPlease wait...")
 else:
-    print("Please wait...")
+    print("\n\nPlease wait...")
 try:
     df = dh.gwas_import_aid()
 except Exception:
@@ -48,10 +48,14 @@ while again == True:
         elif answer == 'b':
             index, disease = uh.aid_index_to_name()
             disease, genes = dh.disease_to_genes(df, disease)
+            print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)) + '.')
             # generate pubmed key with disease name + 1 gene name from the list.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
+            ph.plot_genes(df_pubtator) ##############
             dh.df_to_pickle(df_pubtator, disease)
-            dh.write_txt(pubtator_dic)
+            dh.dic_json(pubtator_dic, disease)
+            dh.write_txt(pubtator_dic, disease)
+            ph.plot_genes(df_pubtator)
 #            chemicals = dh.pubtator_chemicals(pmid_list)
             again = uh.again()
         elif answer == 'c':

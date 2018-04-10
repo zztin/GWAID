@@ -80,7 +80,7 @@ def disease_to_genes(df, disease):
 def search_lit(disease, genes):
     start_time = time.ctime()   ###########################
     #pubtator_input_list = []
-    pubtator_dic = {disease:{'gene_amount':len(genes)}}
+    pubtator_dic = {disease:{}}
     counter = 0
     for gene in genes:
         pubtator_dic_tmp1 = {gene:{}}
@@ -150,10 +150,12 @@ def search_lit(disease, genes):
             print(err) #############
             pubtator_dic[disease][gene]['chemicals'] = None
             pubtator_dic[disease][gene]['amount_chem'] = 0
-    print(pubtator_dic) #
-    df_pubtator = pd.DataFrame.from_dict(pubtator_dic)  # NEW
+    # pubtator_dic contains all useful information extracted from the query. (Further save as json for future use.)
+    print(pubtator_dic) ##########
+    # extract the information for plotting barchart comparison between gene (major output)
+    df_pubtator = pd.DataFrame.from_dict(pubtator_dic[disease],orient = 'index')  # NEW
     print("END")                             #########################
-    print(start_time+ '\n' + time.ctime())   #########################
+    print(start_time+ '\n' + time.ctime())  #########################
     return pubtator_dic, df_pubtator
 
 
@@ -165,19 +167,33 @@ def search_lit(disease, genes):
 
 # save result df to pickle file
 def df_to_pickle(df, disease):
+    print('Save pickle file: ')
     d_filename = uh.fill_filename(disease)
     df.to_pickle('./data/' + d_filename)
 
-def write_txt(dic):
-    filename = str(dic) + '.txt'
-    with open(filename, 'w') as file:
-        file.write(dic)
+
+def write_txt(dic, disease):
+    print('Save txt file: ')
+    d_filename = uh.fill_filename(disease)
+    with open(d_filename, 'w') as file:
+        file.write(str(dic))
+
+def dic_json(dic, disease):
+    print('Save json file: ')
+    d_filename = uh.fill_filename(disease)
+    with open(d_filename + '.txt', 'w') as outfile:
+        json.dump(dic, outfile)
 
 
 # read df as a pickle file for further analysis
 def read_pickle_df(filepath):
     df = pd.read_pickle(filepath)
     return df
+
+# read in json file to a dic
+def read_json(filepath):
+    dic = json.load(filepath)
+    return dic
 
 
 # TRYING
