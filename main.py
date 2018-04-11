@@ -41,7 +41,6 @@ while again == True:
         # By the time waiting for user input, convert data into designed format.
         if answer == 'a':
             ph.plot_overview(df)
-            print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
             again = uh.again()
             # Show heat map between Autoimmune diseases ( Gene hits )
             # overview.aid_compare()
@@ -52,15 +51,19 @@ while again == True:
             # generate pubmed key with disease name + 1 gene name from the list.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             ph.plot_genes(df_pubtator) ##############
-            filename = fill_filename(disease)
+            filename = uh.fill_filename(disease)
             dh.df_to_pickle(df_pubtator, filename)
             dh.dic_json(pubtator_dic, filename)
             dh.write_txt(pubtator_dic, filename)
-            ph.plot_genes(df_pubtator)
+            try:
+                ph.plot_genes(df_pubtator)
+            except Exception as err:    ############ DEVELOPING USE
+                print(err)
+                pass                    ############ DEVELOPING USE
+
 #            chemicals = dh.pubtator_chemicals(pmid_list)
             again = uh.again()
         elif answer == 'c':
-            print("Thank you for using this program. Goodbye. ")
             break
         else:
             print('This is an invalid input. Please try again using a,b,c: ')

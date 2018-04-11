@@ -164,17 +164,17 @@ def search_lit(disease, genes):
 
 # save result df to pickle file
 def df_to_pickle(df, filename):
-    print('Save pickle file: ')
+    print('Pickle file saved. ')
     df.to_pickle('./data/' + filename)
 
 
 def write_txt(dic, filename):
-    print('Save txt file: ')
+    print('.txt file saved. ')
     with open('./data/'+ filename, 'w') as file:
         file.write(str(dic))
 
 def dic_json(dic, filename):
-    print('Save json file: ')
+    print('json file saved. ')
     with open('./data/' + filename + '.txt', 'w') as outfile:
         json.dump(dic, outfile)
 

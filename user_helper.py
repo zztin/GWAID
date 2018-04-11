@@ -3,7 +3,7 @@ import unicodedata
 import re
 
 def print_intro():
-    print("An autoimmune disease is a condition in which your immune system mistakenly attacks your body. \n"
+    print("\nAn autoimmune disease is a condition in which your immune system mistakenly attacks your body. \n"
         "The immune system normally guards against germs like bacteria and viruses. When it senses these\n"
         "foreign invaders, it sends out an army of fighter cells to attack them. \n"
         "In an autoimmune disease, the immune system mistakes part of your body as foreign. It releases \n" 
