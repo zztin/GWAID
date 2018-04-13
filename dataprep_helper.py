@@ -7,13 +7,14 @@ import json
 import time
 import re
 import csv
+import math
 
 
 import user_helper as uh
 
 def gwas_import_aid():
-    df_ori = pd.read_csv("./data/gwas_catalog_v1.0.1-associations_e91_r2018-02-13.tsv",sep='\t',low_memory=False)
-    df = df_ori[['DISEASE/TRAIT', 'STRONGEST SNP-RISK ALLELE', "SNPS", "P-VALUE", 'REPORTED GENE(S)',
+    df = pd.read_csv("./data/gwas_catalog_v1.0.1-associations_e91_r2018-02-13.tsv",sep='\t',low_memory=False)
+    df = df[['DISEASE/TRAIT', 'STRONGEST SNP-RISK ALLELE', "SNPS", "P-VALUE", 'REPORTED GENE(S)',
                   'MAPPED_GENE', 'UPSTREAM_GENE_ID', 'DOWNSTREAM_GENE_ID', 'SNP_GENE_IDS', 'MAPPED_TRAIT',
                   'MAPPED_TRAIT_URI', 'PUBMEDID', 'FIRST AUTHOR', 'DATE', 'JOURNAL']]
     df.insert(loc=1, column="DZ_NAME", value="")
@@ -29,12 +30,23 @@ def gwas_import_aid():
         df_temp2 = df[df['DISEASE/TRAIT'].str.contains(dz)]['DZ_ID'].apply(lambda x: i)
         df.update(df_temp)
         df.update(df_temp2)
-    df.drop(labels = df[df['DZ_ID'] == ''].index, inplace = True)  # Warning! copy version
+    df.drop(labels = df[df['DZ_ID'] == ''].index, inplace = True)
     df.reset_index(inplace= True)
     # convert all values in p-value column to float : Warning! copy version
     #df = df.infer_objects()
-    df['P-VALUE'] = df['P-VALUE'].apply(pd.to_numeric, downcast='float', errors='ignore')
+    df['P-VALUE'] = df['P-VALUE'].apply(pd.to_numeric, errors='raise')
+    df.drop(df[df['P-VALUE'] <= 0].index, inplace = True
+    df['P-VALUE log10-n'] = df['P-VALUE']
+    df['P-VALUE log10-n'] = df['P-VALUE log10-n'].apply(lambda x: -math.log10(float(x)))
+    print(df['P-VALUE log10-n'])
     return df
+
+
+
+def log_p(x):
+    result = -(math.log10(x))
+    return result
+
 
 # Web query response check.
 def query_check(response):
@@ -101,7 +113,7 @@ def search_lit(disease, genes):
             pmid_list = pmid_dic['eSearchResult']['IdList']['Id']
             # Raise TypeError when returning no search results. When search result is 0 hits:  'IdList' is NoneType
             pubtator_dic[disease][gene]['pmid_list'] = pmid_list
-            pubtator_dic[disease][gene]['related_literature_hits'] = len(pmid_list)
+            pubtator_dic[disease][gene]['Disease-Gene related literature amount'] = len(pmid_list)
         except TypeError:
             pmid_list = ''
             pubtator_dic[disease][gene]['pmid_list'] = []
@@ -143,14 +155,14 @@ def search_lit(disease, genes):
                         if chem_id != '':
                             chemicals.append(chem_id)
             pubtator_dic[disease][gene]['chemicals'] = chemicals             # REWRITE! DID NOT CONTAIN THE DATA BEFORE
-            pubtator_dic[disease][gene]['amount_chem'] = len(chemicals)
+            pubtator_dic[disease][gene]['Gene related chemical counts'] = len(chemicals)
         except Exception as err:  # when search result is 0 hits:  'IdList' is NoneType
             pubtator_dic[disease][gene]['chemicals'] = None
-            pubtator_dic[disease][gene]['amount_chem'] = 0
+            pubtator_dic[disease][gene]['Disease-Gene related chemical counts'] = 0
     # pubtator_dic contains all useful information extracted from the query. (Further save as json for future use.)
     print(pubtator_dic) ##########
     # extract the information for plotting barchart comparison between gene (major output)
-    df_pubtator = pd.DataFrame.from_dict(pubtator_dic[disease],orient = 'index')  # NEW
+    df_pubtator = pd.DataFrame.from_dict(pubtator_dic[disease],orient = 'index')
     print("END")                             #########################
     print("Total querying time from \n" + start_time+ '\n' + time.ctime())  #########################
     return pubtator_dic, df_pubtator
@@ -189,17 +201,4 @@ def read_json(filepath):
     dic = json.load(filepath)
     return dic
 
-
-# TRYING
-# df = gwas_import_aid()
-# disease, genes = disease_to_genes(df, 'Asthma')
-# df_pubtator = search_lit(disease, genes)
-
-# built=in dataset
-
-#
-# df = sns.load_dataset('Titanic')
-# df_to_pickle(df, 'Titanic')
-
-# dic = {'dz':{'gene_amount':len(30)}}
-# dic_to_json(dic,'test_dic')
+gwas_import_aid()

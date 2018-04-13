@@ -2,21 +2,32 @@
 import seaborn as sns
 from matplotlib import pyplot as plt
 import pandas as pd
+######### DEVELOPING USE######
+def read_pickle_df(filepath):
+    df = pd.read_pickle(filepath)
+    return df
+df = read_pickle_df('data/GWAS_original_dataframe')
+######### DEVELOPING USE######
+
 
 def plot_overview(df):
-    pt = df.pivot_table(index ="DZ_NAME", columns ="MAPPED_GENE", values ="P-VALUE")
-    sns.heatmap(pt)
-    plt.show()
-    print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
-    sns.clustermap(pt)
-    plt.show()
-    print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
+    print(df['MAPPED_GENE'].values)
+    print(len(df['MAPPED_GENE'].values))
+    pt = df.pivot_table(index ="DZ_NAME", columns ="MAPPED_GENE", values="P-VALUE log10-n",fill_value=1)
+
+#    sns.heatmap(pt)
+#    plt.show()
+#    print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
+    #sns.clustermap(pt)
+    #plt.show()
+    #print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
 
 
 # plot single disease comparison between gene name / publication amount / chemical amount
 def plot_genes(df):
     print(df.head())  #########
-    df.plot.bar(stacked = True)
+    sns.set()     # set default palette
+    df.plot.barh(stacked = True)
     plt.show()
     print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
 
@@ -30,5 +41,3 @@ def plot_genes(df):
     # g.set_ylabels("Genes")
     # plt.show()
     # print("The overview figure is opened in another window. Please save the graph and close the window to continue.")
-
-
