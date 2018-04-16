@@ -87,6 +87,7 @@ def search_lit(disease, genes):
     ##############
     ##STEP 1: Query pubmed for " disease + each gene from the GWAS result"
     ##############
+    start_time = time.ctime()
     counter = 0
     for gene in genes:
         # create a part of the dictionary for each gene to update the main dictionary (for disease) each time.
@@ -149,7 +150,7 @@ def search_lit(disease, genes):
             # The returned structure has two formats, error or success. Both are not JSON structures.
             # 1. Error messages starts with [Error] :
             if '[Error] :' in text_pubtator:
-                print(gene, 'Error message presented. Skip PubTator querying.')
+                print(gene, 'Error message presented. Skip PubTator querying step.')
                 continue
             # 2. Successful query: format: {dic1, dic2, dic3, dic4, dic5, dic6} <-- not a json format. (Not {key: value})
             # Correct it to JSON format by string manipulation.
@@ -183,7 +184,6 @@ def search_lit(disease, genes):
     print("Total querying time from \n" + start_time+ '\n' + time.ctime())
     return pubtator_dic, df_pubtator
 
-
 # save result df to pickle file
 def df_to_pickle(df, filename):
     print('Pickle file saved. ')
@@ -192,12 +192,12 @@ def df_to_pickle(df, filename):
 
 def write_txt(dic, filename):
     print('.txt file saved. ')
-    with open('./data/'+ filename, 'w') as file:
+    with open('./data/'+ filename + ".txt", 'w') as file:
         file.write(str(dic))
 
 def dic_json(dic, filename):
     print('json file saved. ')
-    with open('./data/' + filename + '.txt', 'w') as outfile:
+    with open('./data/' + filename + '_json.txt', 'w') as outfile:
         json.dump(dic, outfile)
 
 
@@ -210,4 +210,5 @@ def read_pickle_df(filepath):
 def read_json(filepath):
     dic = json.load(filepath)
     return dic
+
 

@@ -10,7 +10,7 @@ def print_intro():
         "In an autoimmune disease, the immune system mistakes part of your body as foreign. It releases \n" 
         "proteins called auto-antibodies that attack healthy cells. Pathogenesis of autoimmune diseases \n"
         "involve both environmental and genetic factors. \n"
-        "GWAS studies identified several genetic loci association with clinical menifestations and treatment \n"
+        "GWAS studies identified several genetic loci association with clinical manifestations and treatment \n"
         "outcome. In this program, 15 common autoimmune diseases are included. We provide 2 functions, \n"
         "one compare genetic background of various autoimmune diseases, the other allows deeper understanding \n"
         "to a certain disease by literature curation of related diseases and their treatments. ")
@@ -106,7 +106,7 @@ def again():
     :return:
     """
     again = input("Do you want to use other function of the program? (y/n) ")
-    if again == 'y':
+    if again != 'n':
         return True
     else:
         return False

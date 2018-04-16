@@ -2,9 +2,7 @@
 import user_helper as uh
 import dataprep_helper as dh
 import plot_helper as ph
-import warnings
-import csv
-
+import sys
 
 """
 This main program serves as a controller. data are imported and transported between modules.
@@ -22,9 +20,8 @@ else:
 try:
     df = dh.gwas_import_aid()
 except Exception:
-    pass
     print("The program package is not complete. Some data is lost. End program. ")
-# HOW to end program ???
+    sys.exit()
 
 # Welcome the user
 print("Welcome to Autoimmune disease exploration in Genome-wide association studies (GWAS) program.")
@@ -48,6 +45,7 @@ while again == True:
             disease, genes = dh.disease_to_genes(df, disease)
             print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)))
             # Query pubmed for each gene related to the disease.
+            print('If you would like to halt the query, press ctrl + C. However, the results will not be saved.')
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             # Plot the result genes and chemicals related to the disease.
             ph.plot_genes(df_pubtator, disease)
@@ -64,6 +62,8 @@ while again == True:
             print('This is an invalid input. Please try again using a,b,c: ')
     except ValueError or TypeError:
         print("This is not a valid input. Please try again")
+    except KeyboardInterrupt:
+        print("You have forced stopped the querying process.")
 
 # End program message.
 print("Thank you for using this program. Goodbye. ")

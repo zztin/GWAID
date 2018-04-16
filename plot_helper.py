@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 
+
 def plot_overview(df):
     """
     Plot overview graphs to show the similarities of genetics backgrounds for different autoimmune diseases.
@@ -55,6 +56,10 @@ def plot_genes(df, disease):
     print("The figure is opened in another window. Please save the graph and close the window to continue.")
     # set default palette to seaborn colors.
     sns.set()
+    df = df[df['Disease-Gene related literature amount'] > 0].copy()
     # plot the barchart by pandas function
-    df.plot.barh(stacked = True, title = "Genes and potential therapies (chemicals) related to " + disease, x = 'Counts')
+    ax = df.plot.barh(stacked = True, title = "Genes and potential therapies (chemicals) related to " + disease)
+    ax.set(xlabel="literature / chemical counts", ylabel="genes")
     plt.show()
+
+
