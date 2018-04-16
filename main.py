@@ -8,11 +8,9 @@ import csv
 
 """
 This main program serves as a controller. data are imported and transported between modules.
-df = Autoimmune diseases related data extracted from gwas catelog
 """
 
-# Load data.
-print("Launching Autoimmune diseases exploration in Genome-wide association studies (GWAID)... Please wait...")
+print("Launching Autoimmune diseases exploration in Genome-wide association studies (GWAID).")
 # A short introduction for user (if they like)
 intro = input("Do you want to read some introduction? (y/n) ").lower()
 if intro == 'y':
@@ -20,6 +18,7 @@ if intro == 'y':
     print("\n\nPlease wait...")
 else:
     print("\n\nPlease wait...")
+# Load data.
 try:
     df = dh.gwas_import_aid()
 except Exception:
@@ -38,37 +37,33 @@ while again == True:
                        'b. Select a particular disease of interest. \n'
                        'c. End program. \n'
                        'Enter ( a / b / c ) : ').lower()
-        # By the time waiting for user input, convert data into designed format.
         if answer == 'a':
+            # Show heatmap and clustermap between Autoimmune diseases.
             ph.plot_overview(df)
             again = uh.again()
-            # Show heat map between Autoimmune diseases ( Gene hits )
-            # overview.aid_compare()
         elif answer == 'b':
+            # Ask user which particular disease they would like to query from a list.
             index, disease = uh.aid_index_to_name()
+            # Query the disease in GWAS catelog and return the number of related genes.
             disease, genes = dh.disease_to_genes(df, disease)
             print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)))
-            # generate pubmed key with disease name + 1 gene name from the list.
+            # Query pubmed for each gene related to the disease.
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
-            ph.plot_genes(df_pubtator) ##############
+            # Plot the result genes and chemicals related to the disease.
+            ph.plot_genes(df_pubtator, disease)
+            # Ask user to select a filename to save file.
             filename = uh.fill_filename(disease)
+            # Save files in different formats.
             dh.df_to_pickle(df_pubtator, filename)
             dh.dic_json(pubtator_dic, filename)
             dh.write_txt(pubtator_dic, filename)
-            try:
-                ph.plot_genes(df_pubtator)
-            except Exception as err:    ############ DEVELOPING USE
-                print(err)
-                pass                    ############ DEVELOPING USE
-
-#            chemicals = dh.pubtator_chemicals(pmid_list)
             again = uh.again()
         elif answer == 'c':
             break
         else:
             print('This is an invalid input. Please try again using a,b,c: ')
-# TBD: what errors exactly?
     except ValueError or TypeError:
         print("This is not a valid input. Please try again")
 
+# End program message.
 print("Thank you for using this program. Goodbye. ")
