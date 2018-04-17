@@ -52,10 +52,12 @@ def gwas_import_aid():
 # Web query response check.
 def query_check(response):
     if response.ok:
-        pass
+        return True
     else:
         print('Something is wrong. Please check the query source website status.')
         print('Error code: ', response)
+        return False
+
 
 
 # Query imported GWAS_AID database
@@ -103,7 +105,8 @@ def search_lit(disease, genes):
         # REST-FUL API access
         response_xml = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", params = payload_eutils)
         # check response
-        query_check(response_xml)
+        if query_check(response_xml) != True:
+            raise Exception
         time.sleep(0.4)  # E-utilitz asked user not to send more than 3 url queries in 1 second. Sleep 0.4 second to delay the process
         try:
             # transform the xml result from the first query into dictionary format. Find useful information ( pubmed id)
@@ -145,7 +148,8 @@ def search_lit(disease, genes):
             # query the pubtator to acquire related chemicals names and amount.
             response_pubtator = requests.get('https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/Chemical/'
                                              + pubtator_input +'/JSON')
-            query_check(response_xml)
+            if query_check(response_xml) != True:
+                raise Exception
             text_pubtator = response_pubtator.text
             # The returned structure has two formats, error or success. Both are not JSON structures.
             # 1. Error messages starts with [Error] :
