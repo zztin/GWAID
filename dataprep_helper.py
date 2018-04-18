@@ -114,7 +114,7 @@ def search_lit(disease, genes):
             pmid_dic = xmltodict.parse(response_xml.text)
             pmid_entry = pmid_dic['eSearchResult']['WebEnv'] # this is useful for retrieving this record of search history (not in use at the moment.)
             pubtator_dic[disease][gene]['pmid_entry'] = pmid_entry
-            pmid_list = pmid_dic['eSearchResult']['IdList']['Id']  # Raise TypeError when returning no search results. When search result is 0 hits:  'IdList' is NoneType
+            pmid_list = pmid_dic['eSearchResult']['IdList']['Id']  # when search result is 0 hits:  'IdList' is NoneType (TypeError)
             # pmid_list is to be used in the next pubtator query.
             pubtator_dic[disease][gene]['pmid_list'] = pmid_list
             # Calculate the amount of literature
@@ -166,8 +166,8 @@ def search_lit(disease, genes):
             # Collect the chemicals information from the json transformed dictionary.
             chemicals = []
             for i in range(0,len(pub_json_load['top'])):
-                for j in range(0,len(pub_json_load['top'][i]['denotations'])): # will raise TypeError when some key is absent
-                    chem = pub_json_load['top'][i]['denotations'][j]['obj']    # will raise TypeError when some key is absent
+                for j in range(0,len(pub_json_load['top'][i]['denotations'])): # raise TypeError when some key is absent
+                    chem = pub_json_load['top'][i]['denotations'][j]['obj']    # raise TypeError when some key is absent
                     # "chem" has a string format:  "Chemical:xxxxxxxx (three types: 1. CHEBI:xxxxx, 2. Cxxxxxx, 3.  Dxxxxxx)
                     # Retrieve the last part of the string after ":" as chem id for further use.
                     chem_id = chem.split(':')[-1]
