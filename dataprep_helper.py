@@ -61,8 +61,9 @@ def query_check(response):
 
 
 # Query imported GWAS_AID database
-def disease_to_genes(df, disease):
+def disease_to_genes(df, disease, logpvalue=8):
     # Select a series of GENES where DZ_NAME is the same as disease
+    df = df[df['P-VALUE log10-n'] > logpvalue ]
     genes = df[df['DZ_NAME'] == disease]['REPORTED GENE(S)']
     gene_list = genes.tolist()
     genes = []

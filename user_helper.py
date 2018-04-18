@@ -53,6 +53,39 @@ def aid_index_to_name():
             wrong_input = True
     return index, disease
 
+def set_pvalue():
+    default = ''
+    while default != 'y' and default != 'n':
+        default = input("The Default for the significance of genes related to the disease is set by P-Value < 1 x 10 -8."
+                    " \n Do you want to proceed with the default value (y) \nor set a higher P-Value (n)? (y/n) \n")
+        if default == 'y':
+            logpvalue = 8
+        elif default == 'n':
+            print("Please enter a cut-off value 'N' for the significance of genes "
+                  "related to the disease you would like to search. N range between 8 and 300.\n"
+                  "Higher N results in more specific relationship and less genes. \n")
+            while True:
+                try:
+                    logpvalue = int(input("P-Value < 1 x 10 -N \nN = "))
+                    if logpvalue > 300 or logpvalue < 8:
+                        raise Exception
+                    break
+                except Exception:
+                    print('This is not a valid input. Please enter an integer between 8 and 300\n')
+        else:
+            print('This is not a valid input. select y or n.\n')
+    return logpvalue
+
+def confirm_pvalue():
+    while True:
+        confirm = input("Do you want to proceed with the amount of the genes to search? \n"
+              "(Tip: Querying 10 genes takes approx. 1 minute.)\n"
+              "Press 'y' to preceed with the search. Press 'n' to select a new P-Value. (y/n)\n")
+        if confirm == 'y' or confirm == 'n':
+            return confirm
+        else:
+            print('This is not a valid input. Press y or n.\n')
+
 
 def filename_convert(value):
     """
@@ -95,7 +128,7 @@ def fill_filename(disease):
                 except Exception:
                     print("Please enter a valid filename. ")
         else:
-            print("Please enter y or n.")
+            print("Please enter y or n.\n")
     return filename
 
 
@@ -110,4 +143,3 @@ def again():
         return True
     else:
         return False
-

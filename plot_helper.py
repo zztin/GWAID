@@ -24,7 +24,7 @@ def plot_overview(df):
     # Create a dataframe containing only the rows with top occurrence genes.
     df_top = df[df['MAPPED_GENE'].isin(top_gene_list)].copy()
     # transform the dataframe into a pivot table containing three columns for plotting the matrix plots.
-    pt = df_top.pivot_table(index ="DZ_NAME", columns ="MAPPED_GENE", values="P-VALUE log10-n",fill_value=1, aggfunc=np.max)
+    pt = df_top.pivot_table(index ="DZ_NAME", columns ="MAPPED_GENE", values="P-VALUE log10-n",fill_value=1, aggfunc=np.max, figsize=(8, 6))
     # plot a heatmap with title and label
     sns.heatmap(pt).set_title('SNPs P-Values for Genes of Autoimmune Diseases')
     # Give users a hint to save the file and close the window in prompt lines.
@@ -58,8 +58,17 @@ def plot_genes(df, disease):
     sns.set()
     df = df[df['Disease-Gene related literature amount'] > 0].copy()
     # plot the barchart by pandas function
-    ax = df.plot.barh(stacked = True, title = "Genes and potential therapies (chemicals) related to " + disease)
+    ax = df.plot.barh(stacked = True, figsize=(8, 6), title = "Genes and potential therapies (chemicals) related to " + disease)
     ax.set(xlabel="literature / chemical counts", ylabel="genes")
     plt.show()
 
+
+def plot_pvalue(df, disease):
+    # Give users a hint to save the file and close the window in prompt lines.
+    print("The figure is opened in another window. Please save the graph and close the window to continue.")
+    sns.set()
+    df = df['P-VALUE log10-n'].copy()
+    ax = df.plot.hist(cumulative=True, title = "P-Value Ranges for Genes related to "+ disease)
+    ax.set(xlabel="P-VALUE, 1 x 10 -N ", ylabel="accumulated gene amount")
+    plt.show()
 

@@ -42,19 +42,28 @@ while again == True:
             # Ask user which particular disease they would like to query from a list.
             index, disease = uh.aid_index_to_name()
             # Query the disease in GWAS catelog and return the number of related genes.
-            disease, genes = dh.disease_to_genes(df, disease)
-            print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)))
+            confirm = 'n'
+            while confirm == 'n':
+                logpvalue = uh.set_pvalue()
+                disease, genes = dh.disease_to_genes(df, disease, logpvalue)
+                print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)) + '\n')
+                confirm = uh.confirm_pvalue()
             # Query pubmed for each gene related to the disease.
-            print('If you would like to halt the query, press ctrl + C. However, the results will not be saved.')
+            print('Starting Pubmed literature search.\n')
+            print('\nIf you would like to halt the query, press ctrl + C. However, the results will not be saved.\n')
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             # Plot the result genes and chemicals related to the disease.
             ph.plot_genes(df_pubtator, disease)
             # Ask user to select a filename to save file.
             filename = uh.fill_filename(disease)
-            # Save files in different formats.
-            dh.df_to_pickle(df_pubtator, filename)
-            dh.dic_json(pubtator_dic, filename)
-            dh.write_txt(pubtator_dic, filename)
+            try:
+                # Save files in different formats.
+                dh.df_to_pickle(df_pubtator, filename)
+                dh.dic_json(pubtator_dic, filename)
+                dh.write_txt(pubtator_dic, filename)
+            except SystemError as err:
+                print(err)
+                print("Unable to save the query data files. It could be the process exceed the memory of your computer.")
             again = uh.again()
         elif answer == 'c':
             break
@@ -64,6 +73,7 @@ while again == True:
         print("This is not a valid input. Please try again")
     except KeyboardInterrupt:
         print("You have forced stopped the querying process.")
+        again = uh.again()
 
 # End program message.
 print("Thank you for using this program. Goodbye. ")
