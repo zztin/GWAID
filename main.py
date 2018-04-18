@@ -41,6 +41,7 @@ while again == True:
         elif answer == 'b':
             # Ask user which particular disease they would like to query from a list.
             index, disease = uh.aid_index_to_name()
+            ph.plot_pvalue(df, disease)
             # Query the disease in GWAS catelog and return the number of related genes.
             confirm = 'n'
             while confirm == 'n':

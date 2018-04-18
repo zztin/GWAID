@@ -4,6 +4,8 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 
+# import dataprep_helper as dh
+# df = dh.read_pickle_df("data/GWASCatelog")
 
 def plot_overview(df):
     """
@@ -65,10 +67,14 @@ def plot_genes(df, disease):
 
 def plot_pvalue(df, disease):
     # Give users a hint to save the file and close the window in prompt lines.
-    print("The figure is opened in another window. Please save the graph and close the window to continue.")
+    print("A figure showing genes amount for each cut-off P-Value is presented. \n"
+          "Use the information to decide which cut-off P-Value. \n"
+          "The figure is opened in another window. Please close the window to continue.")
     sns.set()
-    df = df['P-VALUE log10-n'].copy()
-    ax = df.plot.hist(cumulative=True, title = "P-Value Ranges for Genes related to "+ disease)
-    ax.set(xlabel="P-VALUE, 1 x 10 -N ", ylabel="accumulated gene amount")
+    p_value_series = df[df['DZ_NAME'] == disease]['P-VALUE log10-n']
+    ax = p_value_series.plot.hist(bins = 60, cumulative= -1, figsize=(8, 6))
+    ax.set_xlabel('N, (P-Value = 1 x 10 -N)')
+    ax.set_ylabel('Gene amount for set P-Value')
+    ax.set_title("P-Value Ranges for Genes related to "+ disease)
     plt.show()
 

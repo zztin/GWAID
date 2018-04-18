@@ -49,6 +49,7 @@ def gwas_import_aid():
     return df
 
 
+
 # Web query response check.
 def query_check(response):
     if response.ok:
@@ -215,5 +216,4 @@ def read_pickle_df(filepath):
 def read_json(filepath):
     dic = json.load(filepath)
     return dic
-
 
