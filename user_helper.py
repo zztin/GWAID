@@ -4,16 +4,21 @@ import re
 
 # A introduction paragraph for user to read and understand what is autoimmune diseases.
 def print_intro():
-    print("\nAn autoimmune disease is a condition in which your immune system mistakenly attacks your body. \n"
-        "The immune system normally guards against germs like bacteria and viruses. When it senses these\n"
-        "foreign invaders, it sends out an army of fighter cells to attack them. \n"
-        "In an autoimmune disease, the immune system mistakes part of your body as foreign. It releases \n" 
-        "proteins called auto-antibodies that attack healthy cells. Pathogenesis of autoimmune diseases \n"
-        "involve both environmental and genetic factors. \n"
-        "GWAS studies identified several genetic loci association with clinical manifestations and treatment \n"
-        "outcome. In this program, 15 common autoimmune diseases are included. We provide 2 functions, \n"
-        "one compare genetic background of various autoimmune diseases, the other allows deeper understanding \n"
-        "to a certain disease by literature curation of related diseases and their treatments. ")
+    intro = input("Do you want to read some introduction? (y/n) ").lower()
+    if intro == 'y':
+        print("\nAn autoimmune disease is a condition in which your immune system mistakenly attacks your body. \n"
+              "The immune system normally guards against germs like bacteria and viruses. When it senses these\n"
+              "foreign invaders, it sends out an army of fighter cells to attack them. \n"
+              "In an autoimmune disease, the immune system mistakes part of your body as foreign. It releases \n"
+              "proteins called auto-antibodies that attack healthy cells. Pathogenesis of autoimmune diseases \n"
+              "involve both environmental and genetic factors. \n"
+              "GWAS studies identified several genetic loci association with clinical manifestations and treatment \n"
+              "outcome. In this program, 15 common autoimmune diseases are included. We provide 2 functions, \n"
+              "one compare genetic background of various autoimmune diseases, the other allows deeper understanding \n"
+              "to a certain disease by literature curation of related diseases and their treatments. ")
+        print("\n\nPlease wait...")
+    else:
+        print("\n\nPlease wait...")
 
 # A list for printing. User can choose from the index for each autoimmune disease.
 aid_list = "1. Behcet's disease \n" \
@@ -54,33 +59,34 @@ def aid_index_to_name():
     return index, disease
 
 def set_pvalue():
-    default = ''
-    while default != 'y' and default != 'n':
-        default = input("The Default for the significance of genes related to the disease is set by P-Value < 1 x 10 -8."
-                    " \n Do you want to proceed with the default value (y) \nor set a higher P-Value (n)? (y/n) \n")
-        if default == 'y':
-            logpvalue = 8
-        elif default == 'n':
-            print("Please enter a cut-off value 'N' for the significance of genes "
-                  "related to the disease you would like to search. N range between 8 and 300.\n"
+    reassign = ''
+    while reassign != 'y' and reassign != 'n':
+        reassign = input("The Default for the significance of genes related to the disease is set by P-Value < 1 x 10^ -6."
+                    " \n Do you want to set a different P-Value (y)? (y/n) \n")
+        if reassign == 'n':
+            logpvalue = 6
+        elif reassign == 'y':
+            print("Please enter a cut-off P-value 'N' for the significance of genes "
+                  "related to the disease.\n"
                   "Higher N results in more specific relationship and less genes. \n")
             while True:
                 try:
-                    logpvalue = int(input("P-Value < 1 x 10 -N \nN = "))
-                    if logpvalue > 300 or logpvalue < 8:
+                    logpvalue = int(input("P-Value < 1 x 10^ -N \nN = "))
+                    if logpvalue > 300 or logpvalue < 6:
                         raise Exception
+                    print("You've chose a P-Value < 1 x 10^ -" + str(logpvalue)+ '.')
                     break
                 except Exception:
-                    print('This is not a valid input. Please enter an integer between 8 and 300\n')
+                    print('N should be an integer between 8 and 300\n')
         else:
             print('This is not a valid input. select y or n.\n')
     return logpvalue
 
 def confirm_pvalue():
     while True:
-        confirm = input("Do you want to proceed with the amount of the genes to search? \n"
-              "(Tip: Querying 10 genes takes approx. 1 minute.)\n"
-              "Press 'y' to preceed with the search. Press 'n' to select a new P-Value. (y/n)\n")
+        confirm = input("(Tip: Querying speed: 30 genes / minute. "
+                        "A smaller P-Value results in less genes to search.)\n\n"
+                        "Press 'y' to preceed with the search. Press 'n' to select a new P-Value. (y/n)\n")
         if confirm == 'y' or confirm == 'n':
             return confirm
         else:
@@ -101,7 +107,7 @@ def filename_convert(value):
     return value
 
 
-def fill_filename(disease):
+def fill_filename(disease, logpvalue):
     """
     Generate a default valid filename for user to choose from. User can also enter filename on their own.
     :param disease: The disease the user has queried.
@@ -110,8 +116,8 @@ def fill_filename(disease):
     filename = None
     while filename == None:
         # generate default filename
-        default = input("The Default filename is : GWAID_" + filename_convert(disease) +
-                        " \nDo you want to save with this filename? (y/n) ")
+        default = input("The Default filename is : GWAID_" + filename_convert(disease) + "_P_value_" + str(logpvalue)
+                        + "\nDo you want to save with this filename? (y/n) ")
         if default == 'y':
             # save with default filename.
             filename = filename_convert("GWAID_" + disease)
@@ -138,8 +144,8 @@ def again():
 
     :return:
     """
-    again = input("Do you want to use other function of the program? (y/n) ")
-    if again != 'n':
+    again = input("\nDo you want to leave the program? (y/n) \n")
+    if again != 'y':
         return True
     else:
         return False

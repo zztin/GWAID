@@ -10,12 +10,7 @@ This main program serves as a controller. data are imported and transported betw
 
 print("Launching Autoimmune diseases exploration in Genome-wide association studies (GWAID).")
 # A short introduction for user (if they like)
-intro = input("Do you want to read some introduction? (y/n) ").lower()
-if intro == 'y':
-    uh.print_intro()
-    print("\n\nPlease wait...")
-else:
-    print("\n\nPlease wait...")
+uh.print_intro()
 # Load data.
 try:
     df = dh.gwas_import_aid()
@@ -41,22 +36,26 @@ while again == True:
         elif answer == 'b':
             # Ask user which particular disease they would like to query from a list.
             index, disease = uh.aid_index_to_name()
-            ph.plot_pvalue(df, disease)
             # Query the disease in GWAS catelog and return the number of related genes.
-            confirm = 'n'
+            logpvalue = 6
+            disease, genes = dh.disease_to_genes(df, disease, logpvalue)
+            print("Related gene amount found in GWAS database: " + str(len(genes)) + '\n')
+            confirm = uh.confirm_pvalue()
             while confirm == 'n':
+                ph.plot_pvalue(df, disease)
                 logpvalue = uh.set_pvalue()
                 disease, genes = dh.disease_to_genes(df, disease, logpvalue)
-                print('Query disease: '+ disease + '. Related gene amount found in GWAS database: '+  str(len(genes)) + '\n')
+                print('Query disease: ' + disease + '. Related gene amount found in GWAS database: ' + str(
+                    len(genes)) + '\n')
                 confirm = uh.confirm_pvalue()
             # Query pubmed for each gene related to the disease.
             print('Starting Pubmed literature search.\n')
-            print('\nIf you would like to halt the query, press ctrl + C. However, the results will not be saved.\n')
+            print('(If you would like to halt the query, press ctrl + C. However, the results will not be saved.)\n')
             pubtator_dic, df_pubtator = dh.search_lit(disease=disease, genes=genes)
             # Plot the result genes and chemicals related to the disease.
-            ph.plot_genes(df_pubtator, disease)
+            ph.plot_genes(df_pubtator, disease, logpvalue)
             # Ask user to select a filename to save file.
-            filename = uh.fill_filename(disease)
+            filename = uh.fill_filename(disease, logpvalue)
             try:
                 # Save files in different formats.
                 dh.df_to_pickle(df_pubtator, filename)
