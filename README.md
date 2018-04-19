@@ -1,4 +1,4 @@
-<>< <>< <>< <>< ------ Project GWAID ------ <>< <>< <>< <><
+# Project GWAID 
 
 An Automated Literature Curation Program for Discovering Potential Therapies
 in Genome-Wide Association Studies on Autoimmune Diseases
@@ -8,7 +8,7 @@ genome wide association studies written in Python programming language.
 The project is a final assignment of the course Computational Thinking, Data Science Profile, Utrecht University.
 
 <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
-A quick start:
+## A quick start:
 
 <>< Configuration requirement --
 1. Download Anaconda Python 3.6 Distribution according to your OS(MacOS, Linux, or Windows). Available at:
@@ -83,22 +83,20 @@ zzzstop@gmail.com
 
 <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
 
-References:
-GWAS data retrieved from GWAS Catelog:
-1. Burdett T (EBI), Hall PN (NHGRI), Hastings E (EBI), Hindorff LA (NHGRI), Junkins HA (NHGRI), Klemm AK (NHGRI),
-MacArthur J (EBI), Manolio TA (NHGRI), Morales J (EBI), Parkinson H (EBI) and Welter D (EBI). The NHGRI-EBI Catalog
-of published genome-wide association studies. Available at: www.ebi.ac.uk/gwas. Accessed 03-05-2018, version v.1.0.1.
+## References:
+#### GWAS data retrieved from GWAS Catelog:
 
-Web services used in this program:
+* Burdett T (EBI), Hall PN (NHGRI), Hastings E (EBI), Hindorff LA (NHGRI), Junkins HA (NHGRI), Klemm AK (NHGRI), MacArthur J (EBI), Manolio TA (NHGRI), Morales J (EBI), Parkinson H (EBI) and Welter D (EBI). The NHGRI-EBI Catalog of published genome-wide association studies. Available at: www.ebi.ac.uk/gwas. Accessed 03-05-2018, version v.1.0.1.
+
+#### Web services used in this program:
 PubMed E-utilities:
-2. Sayers E. E-utilities Quick Start. 2008 Dec 12 [Updated 2017 Nov 1]. In: Entrez Programming Utilities Help
-[Internet]. Bethesda (MD): National Center for Biotechnology Information (US); 2010-.
-Available from: https://www.ncbi.nlm.nih.gov/books/NBK25500/
+
+* Sayers E. E-utilities Quick Start. 2008 Dec 12 [Updated 2017 Nov 1]. In: Entrez Programming Utilities Help [Internet]. Bethesda (MD): National Center for Biotechnology Information (US); 2010-.Available from: https://www.ncbi.nlm.nih.gov/books/NBK25500/
 
 PubTator:
-3. Wei CH et. al., PubTator: A Web-based text mining tool for assisting Biocuration, Nucleic acids research,
-2013, 41 (W1): W518-W522
-4. Wei CH et. al., Accelerating literature curation with text-mining tools: a case study of using PubTator to curate
- genes in PubMed abstracts, Database (Oxford), 2012, bas041
-5. Wei CH et. al., PubTator: A PubMed-like interactive curation system for document triage and literature curation,
-in Proceedings of BioCreative 2012 workshop, Washington DC, USA, 145-150, 2012
+
+* Wei CH et. al., PubTator: A Web-based text mining tool for assisting Biocuration, Nucleic acids research, 2013, 41 (W1): W518-W522
+
+* Wei CH et. al., Accelerating literature curation with text-mining tools: a case study of using PubTator to curate genes in PubMed abstracts, Database (Oxford), 2012, bas041
+
+* Wei CH et. al., PubTator: A PubMed-like interactive curation system for document triage and literature curation,in Proceedings of BioCreative 2012 workshop, Washington DC, USA, 145-150, 2012
