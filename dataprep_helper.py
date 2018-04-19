@@ -222,4 +222,3 @@ def dic_json(dic, filename):
 # def read_json(filepath):
 #     dic = json.load(filepath)
 #     return dic
-

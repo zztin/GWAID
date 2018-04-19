@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 
+
 def plot_overview(df):
     """
     Plot overview graphs to show the similarities of genetics backgrounds for different autoimmune diseases.
@@ -74,6 +75,7 @@ def plot_genes(df, disease, logpvalue):
     except Exception as err:
         print("Something is wrong with plotting. Error: " + err)
         print("Please try again.")
+
 
 
 def plot_pvalue(df, disease):
