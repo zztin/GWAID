@@ -62,7 +62,7 @@ def query_check(response):
 
 
 # Query imported GWAS_AID database
-def disease_to_genes(df, disease, logpvalue=8):
+def disease_to_genes(df, disease, logpvalue=6):
     # Select a series of GENES where DZ_NAME is the same as disease
     df = df[df['P-VALUE log10-n'] > logpvalue ]
     genes = df[df['DZ_NAME'] == disease]['REPORTED GENE(S)']
@@ -207,13 +207,19 @@ def dic_json(dic, filename):
         json.dump(dic, outfile)
 
 
-# read df as a pickle file for further analysis
-def read_pickle_df(filepath):
-    df = pd.read_pickle(filepath)
-    return df
-
-# read in json file to a dic
-def read_json(filepath):
-    dic = json.load(filepath)
-    return dic
+# Below are functions for retrieving saved data. These are not included in this submitted version.
+# # Generating a dataframe pf autoimmune diseases for repeatative use.
+# # df = gwas_import_aid()
+# # df_to_pickle(df, "GWASCatelog")
+# # df = read_pickle_df('data/GWASCatelog')
+#
+# # read df as a pickle file for further analysis ( not included in the moment)
+# def read_pickle_df(filepath):
+#     df = pd.read_pickle(filepath)
+#     return df
+#
+# # read in json file to a dic ( not included in the moment)
+# def read_json(filepath):
+#     dic = json.load(filepath)
+#     return dic
 
