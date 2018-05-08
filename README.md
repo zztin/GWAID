@@ -1,7 +1,7 @@
 # Project GWAID 
 
-An Automated Literature Curation Program for Discovering Potential Therapies
-in Genome-Wide Association Studies on Autoimmune Diseases
+<>< An Automated Literature Curation Program for Discovering Potential Therapies  
+in Genome-Wide Association Studies on Autoimmune Diseases <><
 
 The GWAID project is a data exploration tool focusing on genetic information of autoimmune diseases from
 genome wide association studies written in Python programming language. 
