@@ -8,7 +8,7 @@ The project is a final assignment of the course Computational Thinking, Applied 
 
 ## A quick start:
 
-<>< Configuration requirement
+#### Configuration requirement:
 1. Download Anaconda Python 3.6 Distribution according to your OS(MacOS, Linux, or Windows). Available at:
 https://www.anaconda.com/download/
 2. (Optional) Create a virtual environment for running the program. Instruction check (step 1-4):
@@ -19,7 +19,7 @@ Type these following line into terminal:
 
 pip install xmltodict
 
-<>< Operating instructions
+####  Operating instructions:
 
 1. Create a folder named data. Download GWAS Catelog all association v1.0.1 Available at:
 http://www.ebi.ac.uk/gwas/docs/file-downloads
