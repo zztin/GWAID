@@ -4,13 +4,12 @@ An Automated Literature Curation Program for Discovering Potential Therapies
 in Genome-Wide Association Studies on Autoimmune Diseases
 <><
 The GWAID project is a data exploration tool focusing on genetic information of autoimmune diseases from
-genome wide association studies written in Python programming language.
-The project is a final assignment of the course Computational Thinking, Data Science Profile, Utrecht University.
+genome wide association studies written in Python programming language. 
+The project is a final assignment of the course Computational Thinking, Applied Data Science Profile, Utrecht University. This project focus on the implementation of using API tools and software structural design. Relevance in life science needed to be ingestigated and refined. 
 
-<>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
 ## A quick start:
 
-<>< Configuration requirement --
+<>< Configuration requirement
 1. Download Anaconda Python 3.6 Distribution according to your OS(MacOS, Linux, or Windows). Available at:
 https://www.anaconda.com/download/
 2. (Optional) Create a virtual environment for running the program. Instruction check (step 1-4):
@@ -32,9 +31,14 @@ http://www.ebi.ac.uk/gwas/docs/file-downloads
 
 3. run "python main.py "
 
-<>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
+## Expected Outcomes:
 
-<>< List of files included:
+1. Individual Autoimmune disease function: A barchart of literature counts and related chemicals appeared in literature in every genes related to the disease above user-defined cut-off P-Value. As a review of interests of further investigation of disease related genes discovered in GWA studies.
+2. Overview function: Return a heatmap and a clustered heatmap for Autoimmune diseases and mutated genes based on P-Value of SNP located in the genes.
+3. Figures and details please refer to this PDF document in the link: http://bit.ly/gwaid_project_report
+
+
+##  List of files included:
 
 1. data/gwas_catalog_v1.0.1-associations_e91_r2018-02-13.tsv
 2. data/GWASCatelog
@@ -44,9 +48,8 @@ http://www.ebi.ac.uk/gwas/docs/file-downloads
 6. user_helper.py
 7. README.TXT
 
-<>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
 
-<>< Copyright and licensing:BSD 3-Clause License
+## Copyright and licensing:BSD 3-Clause License
 
 Copyright (c) 2018, zztin
 All rights reserved.
@@ -76,12 +79,9 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-<>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
 
-Author Contact information:
+## Author Contact information:
 zzzstop@gmail.com
-
-<>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <>< <><
 
 ## References:
 #### GWAS data retrieved from GWAS Catelog:
