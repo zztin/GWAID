@@ -2,7 +2,7 @@
 
 An Automated Literature Curation Program for Discovering Potential Therapies
 in Genome-Wide Association Studies on Autoimmune Diseases
-<><
+
 The GWAID project is a data exploration tool focusing on genetic information of autoimmune diseases from
 genome wide association studies written in Python programming language. 
 The project is a final assignment of the course Computational Thinking, Applied Data Science Profile, Utrecht University. This project focus on the implementation of using API tools and software structural design. Relevance in life science needed to be ingestigated and refined. 
