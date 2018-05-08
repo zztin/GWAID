@@ -1,7 +1,6 @@
 # Project GWAID 
 
-<>< An Automated Literature Curation Program for Discovering Potential Therapies  
-in Genome-Wide Association Studies on Autoimmune Diseases <><
+"An Automated Literature Curation Program for Discovering Potential Therapies in Genome-Wide Association Studies on Autoimmune Diseases" 
 
 The GWAID project is a data exploration tool focusing on genetic information of autoimmune diseases from
 genome wide association studies written in Python programming language. 
@@ -31,14 +30,17 @@ http://www.ebi.ac.uk/gwas/docs/file-downloads
 
 3. run "python main.py "
 
-## Expected Outcomes:
+## Expected Inputs and Outputs:
 
-1. Individual Autoimmune disease function: A barchart of literature counts and related chemicals appeared in literature in every genes related to the disease above user-defined cut-off P-Value. As a review of interests of further investigation of disease related genes discovered in GWA studies.
+Figures results and step-by-step instruction please refer to this PDF document in the link: http://bit.ly/gwaid_project_report
 
-2. Overview function: Return a heatmap and a clustered heatmap for Autoimmune diseases and mutated genes based on P-Value of SNP located in the genes.
+1. Individual Autoimmune disease function: 
+  - Input: Select an autoimmune disease from a list.
+  - Output: A barchart of literature counts and related chemicals appeared in literature in every genes related to the disease above user-defined cut-off P-Value. As a review of interests of further investigation of disease related genes discovered in GWA studies.
 
-3. Figures and details please refer to this PDF document in the link: http://bit.ly/gwaid_project_report
-
+2. Overview function: 
+  - Input: Select "Overview of autoimmune diseases" option.
+  - Output: Return a heatmap and a clustered heatmap for Autoimmune diseases and mutated genes based on P-Value of SNP located in the genes.
 
 ##  List of files included:
 
