@@ -34,7 +34,9 @@ http://www.ebi.ac.uk/gwas/docs/file-downloads
 ## Expected Outcomes:
 
 1. Individual Autoimmune disease function: A barchart of literature counts and related chemicals appeared in literature in every genes related to the disease above user-defined cut-off P-Value. As a review of interests of further investigation of disease related genes discovered in GWA studies.
+
 2. Overview function: Return a heatmap and a clustered heatmap for Autoimmune diseases and mutated genes based on P-Value of SNP located in the genes.
+
 3. Figures and details please refer to this PDF document in the link: http://bit.ly/gwaid_project_report
 
 
