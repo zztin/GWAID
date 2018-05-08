@@ -32,7 +32,7 @@ http://www.ebi.ac.uk/gwas/docs/file-downloads
 
 ## Expected Inputs and Outputs:
 
-Figures results and step-by-step instruction please refer to this PDF document in the link: http://bit.ly/gwaid_project_report
+Figures results and step-by-step instruction please refer to this PDF document in the link: http://bit.ly/gwaid_program
 
 1. Individual Autoimmune disease function: 
   - Input: Select an autoimmune disease from a list.
