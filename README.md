@@ -17,7 +17,10 @@ https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/20/conda/
 3. install additional Python packages to the virtual environment or to root python installation.
 Type these following line into terminal:
 
-pip install xmltodict
+```pip install xmltodict```  
+
+Or alternatively:  
+``` conda install -c conda-forge xmltodict ```
 
 ####  Operating instructions:
 
